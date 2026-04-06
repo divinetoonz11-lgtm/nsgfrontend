@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Next Era Global (NEG) Brand Tokens - Light Mode */
+    --background: 0 0% 100%;
+    --foreground: 217 33% 17%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 217 33% 17%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 33% 17%;
+    
+    /* Primary: Dark Blue #0B1F3A */
+    --primary: 220 13% 18%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary: Gold #D4AF37 */
+    --secondary: 45 77% 62%;
+    --secondary-foreground: 220 13% 18%;
+    
+    /* Accent: Light Blue #4F46E5 */
+    --accent: 243 55% 59%;
+    --accent-foreground: 0 0% 100%;
+    
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 210 40% 98%;
+    
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 220 13% 18%;
+    
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    /* Next Era Global (NEG) Brand Tokens - Dark Mode */
+    --background: 220 13% 10%;
+    --foreground: 210 40% 98%;
+    
+    --card: 220 13% 14%;
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 220 13% 14%;
+    --popover-foreground: 210 40% 98%;
+    
+    /* Primary: Dark Blue (Lightened for dark mode visibility or kept as brand) */
+    --primary: 210 40% 98%;
+    --primary-foreground: 220 13% 18%;
+    
+    /* Secondary: Gold #D4AF37 */
+    --secondary: 45 77% 62%;
+    --secondary-foreground: 220 13% 18%;
+    
+    /* Accent: Light Blue #4F46E5 */
+    --accent: 243 55% 65%;
+    --accent-foreground: 0 0% 100%;
+    
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 210 40% 98%;
+    
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 45 77% 62%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Outfit', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-balance tracking-tight;
+  }
+  h1 { @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight; }
+  h2 { @apply text-3xl md:text-4xl font-bold leading-snug; }
+  h3 { @apply text-2xl md:text-3xl font-semibold leading-snug; }
+  h4 { @apply text-xl md:text-2xl font-medium leading-snug; }
+  p { @apply text-base leading-relaxed max-w-[65ch]; }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .section-padding {
+    @apply py-[60px] md:py-[80px];
+  }
+
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium tracking-wide uppercase;
+  }
+  .status-active, .status-available {
+    @apply bg-[hsl(var(--success)/0.15)] text-[hsl(var(--success))];
+  }
+  .status-sold, .status-inactive {
+    @apply bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))];
+  }
+  .status-coming-soon, .status-pending {
+    @apply bg-[hsl(var(--warning)/0.15)] text-[hsl(var(--warning))];
+  }
+}
+
+@layer utilities {
+  .z-toast { z-index: 9999; }
+  .z-modal { z-index: 9998; }
+  .z-dropdown { z-index: 9000; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}

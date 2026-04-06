@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://nexteraglobal.co.in/sitemap.xml
