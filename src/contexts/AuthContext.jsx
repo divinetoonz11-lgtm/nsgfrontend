@@ -86,7 +86,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ REAL sponsor validation (backend call + normalize)
+  // ✅ Sponsor validation (backend)
   const validateSponsor = async (sponsorId) => {
     try {
       const res = await api.get(
