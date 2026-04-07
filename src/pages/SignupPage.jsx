@@ -21,19 +21,23 @@ const SignupPage = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Optional sponsor validation frontend
-    const sponsorResult = await validateSponsor(formData.sponsorReferralId);
+    const sponsorCode = formData.sponsorReferralId.trim().toUpperCase();
+
+    // ✅ validateSponsor same रहेगा
+    const sponsorResult = await validateSponsor(sponsorCode);
+
     if (!sponsorResult.success) {
       toast.error("Invalid sponsor ID");
       setLoading(false);
       return;
     }
 
+    // ✅ IMPORTANT FIX (mapping only)
     const payload = {
       name: formData.fullName,
       email: formData.email.toLowerCase().trim(),
       password: formData.password,
-      sponsorReferralId: formData.sponsorReferralId.trim().toUpperCase(),
+      sponsorId: sponsorCode, // 🔥 FIX HERE (no UI change)
       placement: formData.placement.toLowerCase(),
     };
 
