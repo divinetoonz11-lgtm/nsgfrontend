@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import api from "@/services/api.js";
+import api from "@/lib/apiClient.js"; // VPS backend
 
 export const AuthContext = createContext(null);
 
@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
   };
 
+  // ✅ Signup
   const signup = async (formData) => {
     try {
       const res = await api.post("/auth/signup", formData);
@@ -54,6 +55,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // ✅ Login
   const login = async (formData) => {
     try {
       const res = await api.post("/auth/login", formData);
@@ -70,6 +72,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // ✅ Google login
   const googleLogin = async (formData) => {
     try {
       const res = await api.post("/auth/google-login", formData);
@@ -86,12 +89,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Sponsor validation (backend)
+  // ✅ Sponsor validation (robust)
   const validateSponsor = async (sponsorId) => {
     try {
-      const res = await api.get(
-        `/auth/validate-sponsor/${sponsorId.trim().toUpperCase()}`
-      );
+      const sponsorCode = sponsorId?.trim().toUpperCase();
+      if (!sponsorCode) return { success: false };
+
+      const res = await api.get(`/auth/validate-sponsor/${sponsorCode}`);
       return res.data;
     } catch (err) {
       return { success: false };
