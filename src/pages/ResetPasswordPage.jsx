@@ -1,7 +1,7 @@
-
+// src/pages/ResetPasswordPage.jsx
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, ArrowLeft, CheckCircle2, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,8 +12,7 @@ import { useAuth } from '@/hooks/useAuth.js';
 import Logo from '@/components/Logo.jsx';
 
 export default function ResetPasswordPage() {
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get('token');
+  const { token } = useParams();
   const [formData, setFormData] = useState({ newPassword: '', confirmPassword: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState('idle'); // idle, success, error
@@ -22,27 +21,35 @@ export default function ResetPasswordPage() {
   const navigate = useNavigate();
 
   const validatePassword = (pass) => {
+    // Minimum 8 chars, uppercase, lowercase, number, special
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return regex.test(pass);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!token) {
       toast.error('No reset token provided');
       return;
     }
+
     if (!validatePassword(formData.newPassword)) {
-      toast.error('Password must be at least 8 characters and include uppercase, lowercase, number, and special character.');
+      toast.error(
+        'Password must be at least 8 characters and include uppercase, lowercase, number, and special character.'
+      );
       return;
     }
+
     if (formData.newPassword !== formData.confirmPassword) {
       toast.error('Passwords do not match');
       return;
     }
 
     setIsSubmitting(true);
+
     const result = await resetPassword(token, formData.newPassword);
+
     if (!result.success) {
       setStatus('error');
       setErrorMessage(result.message || 'Reset link is invalid or expired');
@@ -50,10 +57,9 @@ export default function ResetPasswordPage() {
     } else {
       setStatus('success');
       toast.success('Password reset successfully!');
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000);
+      setTimeout(() => navigate('/login'), 3000);
     }
+
     setIsSubmitting(false);
   };
 
@@ -77,9 +83,9 @@ export default function ResetPasswordPage() {
       <Helmet><title>Set New Password - Next Erra Group</title></Helmet>
       <div className="min-h-[100dvh] flex items-center justify-center bg-background p-4">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-background z-0" />
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }} 
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="w-full max-w-md bg-card text-card-foreground rounded-2xl p-8 shadow-xl border border-border/50 relative z-10"
         >

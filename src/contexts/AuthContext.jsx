@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import api from "@/lib/apiClient.js"; // VPS backend
+import api from "@/lib/apiClient.js";
 
 export const AuthContext = createContext(null);
 
@@ -59,7 +59,11 @@ export const AuthProvider = ({ children }) => {
   const login = async (formData) => {
     try {
       const res = await api.post("/auth/login", formData);
-      if (res.data.success) saveSession(res.data.user, res.data.token);
+
+      if (res.data.success) {
+        saveSession(res.data.user, res.data.token);
+      }
+
       return res.data;
     } catch (err) {
       return {
@@ -72,11 +76,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Google login
-  const googleLogin = async (formData) => {
+  // ✅ Forgot Password 🔥 ADD THIS
+  const forgotPassword = async (email) => {
     try {
-      const res = await api.post("/auth/google-login", formData);
-      if (res.data.success) saveSession(res.data.user, res.data.token);
+      const res = await api.post("/auth/forgot-password", { email });
       return res.data;
     } catch (err) {
       return {
@@ -84,16 +87,19 @@ export const AuthProvider = ({ children }) => {
         message:
           err.response?.data?.message ||
           err.response?.data?.error ||
-          "Google authentication failed",
+          "Failed to send reset link",
       };
     }
   };
 
-  // ✅ Sponsor validation (robust)
+  // ✅ Sponsor validation
   const validateSponsor = async (sponsorId) => {
     try {
       const sponsorCode = sponsorId?.trim().toUpperCase();
-      if (!sponsorCode) return { success: false };
+
+      if (!sponsorCode) {
+        return { success: false };
+      }
 
       const res = await api.get(`/auth/validate-sponsor/${sponsorCode}`);
       return res.data;
@@ -111,9 +117,9 @@ export const AuthProvider = ({ children }) => {
         token,
         signup,
         login,
-        googleLogin,
         logout,
         validateSponsor,
+        forgotPassword, // 🔥 ADD HERE
         isAuthenticated,
         loading,
       }}
