@@ -58,12 +58,12 @@ const SignupPage = ({ isAssociate = false }) => {
     setLoading(true);
 
     try {
-      // Frontend validation
+      // 🔹 React validation only
       if (
-        !formData.fullName?.trim() ||
-        !formData.email?.trim() ||
+        !formData.fullName.trim() ||
+        !formData.email.trim() ||
         !formData.password ||
-        (isAssociate && !formData.sponsorReferralId?.trim())
+        (isAssociate && !formData.sponsorReferralId.trim())
       ) {
         toast.error("All fields are required");
         setLoading(false);
@@ -82,7 +82,7 @@ const SignupPage = ({ isAssociate = false }) => {
         }
       }
 
-      // Prepare payload
+      // Payload mapping to backend fields
       const payload = {
         name: formData.fullName.trim(),
         email: formData.email.toLowerCase().trim(),
@@ -96,8 +96,12 @@ const SignupPage = ({ isAssociate = false }) => {
         payload.placement = formData.placement.toLowerCase();
       }
 
+      console.log("Signup payload:", payload); // 🔹 debug payload
+
       // Signup API call
       const result = await signup(payload);
+      console.log("Signup response:", result); // 🔹 debug response
+
       if (result.success) {
         toast.success("Form submitted successfully, verify your email");
 

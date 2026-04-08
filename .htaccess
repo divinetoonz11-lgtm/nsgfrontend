@@ -1,0 +1,24 @@
+# ========================
+# React SPA fallback for Next Erra Global
+# ========================
+RewriteEngine On
+RewriteBase /
+
+# Serve index.html normally
+RewriteRule ^index\.html$ - [L]
+
+# If request is for a real file or directory, serve it
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Otherwise, redirect all routes to index.html (SPA fallback)
+RewriteRule . /index.html [L]
+
+# Optional: Disable directory listing
+Options -Indexes
+
+# Optional: Cache static assets for performance
+<FilesMatch "\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$">
+  ExpiresActive On
+  ExpiresDefault "access plus 1 month"
+</FilesMatch>
